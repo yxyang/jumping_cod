@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="A framework for learning continuous, long-distance and adaptive jumping behavior for quadrupedal robots.">
+        content="Presenting a framework for continuous, high-speed, terrain-adaptive jumping of quadrupedal robots..">
   <meta name="keywords" content="Jumping, Legged Locomotion, Robot Agility, Reinforcement Learning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CAJun: Continuous Adaptive Jumping using a Learned Centroidal Controller</title>
+  <title>Advancing Quadrupedal Agility with Continuous Jumping</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-HHV69BGDVM"></script>
@@ -87,18 +87,26 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">CAJun: Continuous Adaptive Jumping using a Learned Centroidal Controller</h1>
+          <h1 class="title is-1 publication-title">Advancing Quadrupedal Agility with Continuous Jumping</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://yxyang.github.io/">Yuxiang Yang</a><sup>1</sup>,</span>
             <span class="author-block">
               <a href="https://www.gshi.me/">Guanya Shi</a><sup>3</sup>,</span>
             <span class="author-block">
+              <a href="https://linchangyi1.github.io/">Changyi Lin</a><sup>3</sup>,</span>
+            <span class="author-block">
               <a href="https://homes.cs.washington.edu/~xiangyun/">Xiangyun Meng</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://rosarioscalise.com/">Rosario Scalise</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://mateoguaman.com/">Mateo Guaman Castro</a><sup>1</sup>,</span>
             <span class="author-block">
               <a href="https://wenhaoyu.weebly.com/">Wenhao Yu</a><sup>2</sup>,</span>
             <span class="author-block">
               <a href="https://research.google/people/TingnanZhang/">Tingnan Zhang</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a><sup>3</sup>,</span>            
             <span class="author-block">
               <a href="https://www.jie-tan.net/">Jie Tan</a><sup>2</sup>,</span>
             <span class="author-block">
@@ -112,7 +120,7 @@
           </div>
 
           <div class="column has-text-centered">
-            <b>To be presented at CoRL 2023</b>
+            <b>Under Submission, ICRA 2024</b>
           </div>
 
           <div class="column has-text-centered">
@@ -128,32 +136,32 @@
                 </a>
               </span>
               <span class="link-block">
-                <a href="https://arxiv.org/abs/2306.09557"
+                <a href="TODO"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
                   </span>
-                  <span>arXiv</span>
+                  <span>arXiv (Coming Soon)</span>
                 </a>
               </span>
               <!-- Video Link. -->
               <span class="link-block">
-                <a href="https://youtu.be/uWofjeirdEY"
+                <a href="TODO"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-youtube"></i>
                   </span>
-                  <span>Video</span>
+                  <span>Video (Coming Soon)</span>
                 </a>
               </span>
               <!-- Code Link. -->
               <span class="link-block">
-                <a href="https://github.com/yxyang/cajun/"
+                <a href="https://yxyang.github.io/agile_jumping"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
-                  <span>Code (Now Available!)</span>
+                  <span>Code (Coming Soon)</span>
                   </a>
               </span>
              
@@ -168,75 +176,22 @@
 
 <section class="hero teaser">
   <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video id="teaser" autoplay muted loop playsinline height="100%" stype="bottom: -500px">
+    <div style="display: flex; justify-content: center; align-items: center; height: auto;">
+      <video id="teaser" autoplay muted loop playsinline style="width: 48%; height: auto; margin-right: 2%; border-radius: 10px" >
         <source src="./static/videos/teaser.mp4"
                 type="video/mp4">
       </video>
-      <h2 class="subtitle has-text-centered">
-        <span class="dnerf">CAJun</span> achieves continuous, long-distance jumping for quadrupedal robots, and can jump over a 60cm-wide yoga mat with additional clearance.
-      </h2>
+      <p>  </p>
+      <video id="teaser" autoplay muted loop playsinline style="width: 48%; height: auto; border-radius: 10px" >
+        <source src="./static/videos/teaser_stepstone.mp4"
+                type="video/mp4">
+      </video>
     </div>
+    <h2 class="subtitle has-text-centered">
+      We achieve high-speed, continuous, terrain-adaptive jumping on discontinuous terrains like stairs.
+    </h2>
   </div>
 </section>
-
-
-<!-- <section class="hero is-light is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-steve">
-          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/steve.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-chair-tp">
-          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/chair-tp.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-shiba">
-          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/shiba.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-fullbody">
-          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/fullbody.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-blueshirt">
-          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/blueshirt.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-mask">
-          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/mask.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-coffee">
-          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/coffee.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-toby">
-          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/toby2.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
 
 
 <section class="section">
@@ -247,13 +202,15 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            We present <span class="dnerf">CAJun</span>, a novel hierarchical learning and control framework that enables legged robots to jump continuously with adaptive jumping distances. 
+            We focus on advancing the agility of quadrupedal robots with continuous, precise, and terrain-adaptive jumping in discontinuous terrains such as stairs and stepping stones.
           </p>
           <p>
-            <span class="dnerf">CAJun</span> consists of a high-level centroidal policy and a low-level leg controller. In particular, we use reinforcement learning (RL) to train the centroidal policy, which specifies the gait timing, base velocity, and swing foot position for the leg controller. The leg controller optimizes motor commands for the swing and stance legs according to the gait timing to track the swing foot target and base velocity commands using optimal control. Additionally, we reformulate the stance leg optimizer in the leg controller to speed up policy training by an order of magnitude. Our system combines the versatility of learning with the robustness of optimal control.
+            To accomplish this task, we design a hierarchical learning and control framework, which consists of a learned heightmap predictor for robust terrain perception, a reinforcement-learning-based centroidal-level motion policy for versatile and terrain-adaptive planning, and a low-level model-based leg controller for accurate motion tracking.
+            In addition, we minimize the sim-to-real gap by accurately modeling the hardware characteristics.
           </p>
           <p>
-            By combining RL with optimal control methods, our system achieves the versatility of learning while enjoys the robustness from control methods, making it easily transferable to real robots. We show that after 20 minutes of training on a single GPU, <span class="dnerf">CAJun</span> can achieve continuous, long jumps with adaptive distances on a Go1 robot with small sim-to-real gaps. Moreover, the robot can jump across gaps with a maximum width of 70cm, which is over 40% wider than existing methods.
+            Such a hierarchical and hybrid framework effectively combines the advantages of model-free learning and model-based control, therefore enabling a Unitree Go1 robot to perform agile and continuous jumps on human-sized stairs and sparse stepping stones, for the first time to the best of our knowledge. In particular, the robot can cross two stair steps in each jump and completes a 3.5m long, 2.8m high, 14-step stair in 4.5 seconds.
+            Moreover, the same policy outperforms baselines in various other parkour tasks, such as jumping over single horizontal or vertical discontinuities.
           </p>
         </div>
       </div>
@@ -266,7 +223,7 @@
       <div class="column is-four-fifths">
         <h2 class="title is-3">Video Overview</h2>
         <div class="publication-video">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/uWofjeirdEY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/Lz_wJckllCw?si=32rKfZHz6GuTM9pN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -274,26 +231,54 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title">Jumping on Staircases</h2>
+    <div class="content has-text-justified">
+      <p>
+        Our framework enables a Unitree Go1 robot to jump up a human-sized, 14-step staircase in less than 4.5 seconds, with an average horizontal speed of 0.8m/s and vertical speed of 0.6m/s.
+      </p>
+      <p>
+        The heightmap predictor reconstructs terrain heightmap from depth images. Using this heightmap, the motion policy plans body and foot motions, which is tracked by the leg controller.
+      </p>
+      <div style="display: flex; justify-content: center; align-items: center; height: auto;">
+        <video id="teaser" autoplay muted loop playsinline style="width: 70%; height: auto; border-radius: 10px" >
+          <source src="./static/videos/stair_heightmap.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+      <p>
+        Our framework enables a quadrupedal robot to jump on various staircases in the real world.
+      </p>
+      <div style="display: flex; justify-content: center; align-items: center; height: auto;">
+        <video id="teaser" autoplay muted loop playsinline style="width: 70%; height: auto; border-radius: 10px" >
+          <source src="./static/videos/stair_realworld.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title">Long Distance Jumps</h2>
+    <h2 class="title">Jumping over a Single Discontinuity</h2>
     <div class="content has-text-justified">
       <p>
-        We implement two dynamic jumping gaits using <span class="dnerf">CAJun</span>.
-        In Pronking, all legs jump simultaneously. In Bounding, the front and rear legs jump in alternating order.
+        Our framework achieves state-of-the-art performance in jumping over a single discontinuity.
       </p>
     </div>
     <div class="columns is-centered">
       <!-- pronk_long -->
       <div class="column">
         <div class="content">
-          <h3 class="is-4">Pronking</h3>
+          <h3 class="is-4">Vertical Step</h3>
           <p>
-            CoM displacement: 80cm per step.
+            Step height: 60cm
           </p>
           <video id="pronk_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/pronk_long.mp4"
+            <source src="./static/videos/step.mp4"
                     type="video/mp4">
           </video>
         </div>
@@ -302,12 +287,12 @@
       <!-- bound_long -->
       <div class="column">
         <div class="content">
-          <h3 class="is-4">Bounding</h3>
+          <h3 class="is-4">Horizontal Gap</h3>
           <p>
-            CoM displacement: 70cm per step.
+            Gap width: 80cm
           </p>
           <video id="bound_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/bound_long.mp4"
+            <source src="./static/videos/gap.mp4"
                     type="video/mp4">
           </video>
         </div>
@@ -318,33 +303,20 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title">Jumping with Adaptive Distance</h2>
+    <h2 class="title">Emergent Body and Footstep Planning</h2>
     <div class="content has-text-justified">
       <p>
-        In <span class="dnerf">CAJun</span>, the robot can adapt its jumping distance based on user command. For example, when the distance command shifts between 0.3m and 1m, the robot can alternate between long and short jumps.
+        The motion policy plans versatile body and foot trajectories based on perceived terrain information.
       </p>
     </div>
-    <div class="content">
-      <h3 class="is-4">LED Trajectories</h3>
-      <p>
-        Trajectories of the <span style="color:green"><b>base</b></span>, <span style="color:blue"><b>front leg</b></span> and <span style="color:red"><b>rear leg</b></span>.
-      </p>
-    </div>
-    <video id="teaser" autoplay muted loop playsinline height="100%" stype="bottom: -500px">
-      <source src="./static/videos/pronk_echo.mp4"
-              type="video/mp4">
-    </video>
-    <video id="teaser" autoplay muted loop playsinline height="100%" stype="bottom: -500px">
-      <source src="./static/videos/bound_echo.mp4"
-              type="video/mp4">
-    </video>
     <div class="columns is-centered">
       <!-- pronk_long -->
       <div class="column">
         <div class="content">
-          <h3 class="is-4">Pronking</h3>
+          <h3 class="is-4">Jumping on Stairs</h3>
+          <p>The robot switches between one-step and two-step jumps.</p>
           <video id="pronk_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/alternate_pronk.mp4"
+            <source src="./static/videos/adaptive_stair.mp4"
                     type="video/mp4">
           </video>
         </div>
@@ -353,9 +325,10 @@
       <!-- bound_long -->
       <div class="column">
         <div class="content">
-          <h3 class="is-4">Bounding</h3>
+          <h3 class="is-4">Jumping on Gaps of Different Sizes</h3>
+          <p>The robot plans an intermediate landing for longer gaps.</p>
           <video id="bound_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/alternate_bound.mp4"
+            <source src="./static/videos/adaptive_gap.mp4"
                     type="video/mp4">
           </video>
         </div>
@@ -364,114 +337,13 @@
     </div>
 </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <h2 class="title">Jumping under Perturbation</h2>
-    <div class="content has-text-justified">
-      <p>
-        The hierarchical design of <span class="dnerf">CAJun</span> makes it robust under external perturbations. For example, the robot is able to recover from an agressive backward leash-pull and resume jumping.
-      </p>
-    </div>
-    <div class="columns is-centered">
-      <!-- pronk_long -->
-      <div class="column">
-        <div class="content">
-          <h3 class="is-4">Pronking under Leash</h3>
-          <video id="pronk_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/pronk_leash.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ pronk_long -->
-      <!-- bound_long -->
-      <div class="column">
-        <div class="content">
-          <h3 class="is-4">Bounding under Leash</h3>
-          <video id="bound_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/bound_leash.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ bound_long -->
-    </div>
-    <div class="container is-max-desktop">
-    <div class="content has-text-justified">
-      <p>
-        The robot suffers from foot slipping when entering grass from asphalt, but is able to resume normal jumping after a few steps.
-      </p>
-    </div>
-    <div class="columns is-centered">
-      <!-- pronk_long -->
-      <div class="column">
-        <div class="content">
-          <h3 class="is-4">Pronking on Grass</h3>
-          <video id="pronk_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/pronk_grass.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ pronk_long -->
-      <!-- bound_long -->
-      <div class="column">
-        <div class="content">
-          <h3 class="is-4">Bounding on Grass</h3>
-          <video id="bound_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/bound_grass.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ bound_long -->
-    </div>
-</section>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <h2 class="title">Comparison with End-to-End RL</h2>
-    <div class="content has-text-justified">
-      <p>
-        We compare <span class="dnerf">CAJun</span> with end-to-end RL methods trained under a similar setup, and find that end-to-end method cannot jump as far and suffers from a larger sim-to-real gap.
-      </p>
-    </div>
-    <div class="columns is-centered">
-      <!-- pronk_long -->
-      <div class="column">
-        <div class="content">
-          <h3 class="is-4">Pronking</h3>
-          <p><span class="dnerf">CAJun</span>: 4.76m, E2E: 1.67m</p>
-          <video id="pronk_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/e2e_pronk.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ pronk_long -->
-      <!-- bound_long -->
-      <div class="column">
-        <div class="content">
-          <h3 class="is-4">Bounding</h3>
-          <p><span class="dnerf">CAJun</span>: 4.34m, E2E: 3.47m</p>
-          <video id="bound_long" autoplay muted loop playsinline height="100%">
-            <source src="./static/videos/e2e_bound.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ bound_long -->
-    </div>
-</section>
+
+
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@article{yang2023cajun,
-  title={CAJun: Continuous Adaptive Jumping using a Learned Centroidal Controller},
-  author={Yang, Yuxiang and Shi, Guanya and Meng, Xiangyun and Yu, Wenhao and Zhang, Tingnan and Tan, Jie and Boots, Byron},
-  journal={arXiv preprint arXiv:2306.09557},
-  year={2023}
-}
+    <pre><code>TODO
 </code></pre>
   </div>
 </section>

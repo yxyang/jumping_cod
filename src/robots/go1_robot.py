@@ -23,11 +23,9 @@ class Go1Robot:
                sim_config: ml_collections.ConfigDict,
                motor_control_mode: MotorControlMode,
                terrain: Any,
-               actuator_net_ckpt: Union[str, None] = None,
                motor_torque_delay_steps: int = 0,
                camera_config: Union[ml_collections.ConfigDict, None] = None,
                randomize_com: bool = False):
-    del actuator_net_ckpt  # unused
     del motor_torque_delay_steps  # unused
     del sim  # unused
     del init_positions  # unused
@@ -54,7 +52,6 @@ class Go1Robot:
 
     self._motors = MotorGroup(device=sim_config.sim_device,
                               num_envs=num_envs,
-                              actuator_net_ckpt=None,
                               motors=(
                                   MotorModel(
                                       name="FR_hip_joint",

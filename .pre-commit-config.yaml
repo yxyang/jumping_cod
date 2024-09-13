@@ -1,0 +1,19 @@
+repos:
+- repo: local
+  hooks:
+  - id: pylint
+    name: pylint
+    entry: pylint
+    args: [src]
+    pass_filenames: false
+    language: system
+    types: [python]
+    always_run: true
+  - id: pytype
+    name: pytype
+    entry: pytype
+    args: [src, "--config=pytype.cfg"]
+    pass_filenames: false
+    language: system
+    types: [python]
+    always_run: true

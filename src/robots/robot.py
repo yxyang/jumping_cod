@@ -180,7 +180,7 @@ class Robot:
                                       requires_grad=False)
     for i in range(len(self._thigh_names)):
       self._thigh_indices[i] = self._gym.find_actor_rigid_body_handle(
-          self._envs[0], self._actors[0], self._thigh_names[i]
+          self._envs[0], self._actors[0], self._thigh_names[i])
 
     self._body_indices = torch.zeros(self._num_bodies - len(self._feet_names) -
                                      len(self._thigh_names) -

@@ -1,0 +1,621 @@
+"""Solves the centroidal QP to compute desired foot torques."""
+import time
+from typing import Any
+
+import numpy as np
+import torch
+from qpth.qp import QPFunction, QPSolvers
+
+from src.robots.motors import MotorCommand
+from src.utils.torch_utils import quat_mul, quat_from_euler_xyz, quat_rotate, quat_to_rot_mat, to_torch
+
+
+@torch.jit.script
+def cross_quad(v1, v2):
+  """Assumes v1 is nx3, v2 is nx4x3"""
+  v1 = torch.stack([v1, v1, v1, v1], dim=1)
+  shape = v1.shape
+  v1 = v1.reshape((-1, 3))
+  v2 = v2.reshape((-1, 3))
+  return torch.cross(v1, v2).reshape((shape[0], shape[1], 3))
+
+
+def quat_mul(a, b):
+  x1, y1, z1, w1 = a[0], a[1], a[2], a[3]
+  x2, y2, z2, w2 = b[0], b[1], b[2], b[3]
+  ww = (z1 + x1) * (x2 + y2)
+  yy = (w1 - y1) * (w2 + z2)
+  zz = (w1 + y1) * (w2 - z2)
+  xx = ww + yy + zz
+  qq = 0.5 * (xx + (z1 - x1) * (x2 - y2))
+  w = qq - ww + (z1 - y1) * (y2 - z2)
+  x = qq - xx + (x1 + w1) * (x2 + w2)
+  y = qq - yy + (w1 - x1) * (y2 + z2)
+  z = qq - zz + (z1 + y1) * (w2 - x2)
+  return np.array([x, y, z, w])
+
+
+def quat_from_euler_xyz(roll, pitch, yaw):
+  cy = np.cos(yaw * 0.5)
+  sy = np.sin(yaw * 0.5)
+  cr = np.cos(roll * 0.5)
+  sr = np.sin(roll * 0.5)
+  cp = np.cos(pitch * 0.5)
+  sp = np.sin(pitch * 0.5)
+  qw = cy * cr * cp + sy * sr * sp
+  qx = cy * sr * cp - sy * cr * sp
+  qy = cy * cr * sp + sy * sr * cp
+  qz = sy * cr * cp - cy * sr * sp
+  return np.array([qx, qy, qz, qw])
+
+
+def quat_rotate(q, v):
+  q_w = q[-1]
+  q_vec = q[:3]
+  a = v * (2.0 * q_w**2 - 1.0)
+  b = np.cross(q_vec, v) * q_w * 2.0
+  c = q_vec * (q_vec.T.dot(v) * 2.0)
+  return a + b + c
+
+
+def quat_to_rot_mat(q):
+  x, y, z, w = q[0], q[1], q[2], q[3]
+  Nq = w * w + x * x + y * y + z * z
+  s = 2.0 / Nq
+  X, Y, Z = x * s, y * s, z * s
+  wX, wY, wZ = w * X, w * Y, w * Z
+  xX, xY, xZ = x * X, x * Y, x * Z
+  yY, yZ = y * Y, y * Z
+  zZ = z * Z
+
+  rotation_matrix = np.array([[1.0 - (yY + zZ), xY - wZ, xZ + wY],
+                              [xY + wZ, 1.0 - (xX + zZ), yZ - wX],
+                              [xZ - wY, yZ + wX, 1.0 - (xX + yY)]])
+  return rotation_matrix
+
+
+def quaternion_to_axis_angle(q):
+  angle = 2 * np.arccos(np.clip(q[3], -0.99999, 0.99999))
+  norm = np.clip(np.linalg.norm(q[:3]), 1e-5, 1)
+  axis = q[:3] / norm
+  return axis, angle
+
+
+def compute_orientation_error(
+    desired_orientation_rpy,
+    base_orientation_quat,
+):
+  desired_quat = quat_from_euler_xyz(desired_orientation_rpy[0],
+                                     desired_orientation_rpy[1], 0)
+  base_quat_inv = np.array(base_orientation_quat)
+  base_quat_inv[-1] *= -1
+  error_quat = quat_mul(desired_quat, base_quat_inv)
+  axis, angle = quaternion_to_axis_angle(error_quat)
+  angle = np.where(angle > np.pi, angle - 2 * np.pi, angle)
+  error_so3 = axis * angle
+  return quat_rotate(base_orientation_quat, error_so3)
+
+
+def compute_desired_acc(
+    base_orientation_rpy: np.array,
+    base_position: np.array,
+    base_angular_velocity_body_frame: np.array,
+    base_velocity_body_frame: np.array,
+    desired_base_orientation_rpy: np.array,
+    desired_base_position: np.array,
+    desired_angular_velocity: np.array,
+    desired_linear_velocity: np.array,
+    desired_angular_acceleration: np.array,
+    desired_linear_acceleration: np.array,
+    base_position_kp: np.array,
+    base_position_kd: np.array,
+    base_orientation_kp: np.array,
+    base_orientation_kd: np.array,
+    device: str = "cuda",
+):
+  base_rpy = base_orientation_rpy
+  base_quat = quat_from_euler_xyz(base_rpy[0], base_rpy[1], 0)
+  base_rot_mat_zero_yaw = quat_to_rot_mat(base_quat)
+  base_rot_mat_zero_yaw_t = base_rot_mat_zero_yaw.T
+
+  lin_pos_error = desired_base_position - base_position
+  lin_pos_error[:2] = 0
+  lin_vel_error = desired_linear_velocity - base_rot_mat_zero_yaw.dot(
+      base_velocity_body_frame)
+  desired_lin_acc_gravity_frame = (base_position_kp * lin_pos_error +
+                                   base_position_kd * lin_vel_error +
+                                   desired_linear_acceleration)
+
+  ang_pos_error = compute_orientation_error(desired_base_orientation_rpy,
+                                            base_quat)
+  ang_vel_error = desired_angular_velocity - base_rot_mat_zero_yaw.dot(
+      base_angular_velocity_body_frame)
+  desired_ang_acc_gravity_frame = (base_orientation_kp * ang_pos_error +
+                                   base_orientation_kd * ang_vel_error +
+                                   desired_angular_acceleration)
+
+  desired_lin_acc_body_frame = base_rot_mat_zero_yaw_t.dot(
+      desired_lin_acc_gravity_frame)
+
+  desired_ang_acc_body_frame = base_rot_mat_zero_yaw_t.dot(
+      desired_ang_acc_gravity_frame)
+  # print(f"Desired position: {desired_base_position}")
+  # print(f"Current position: {base_position}")
+  # print(f"Desired lin acc body: {desired_lin_acc_body_frame}")
+  # print(f"Desired ang acc body: {desired_ang_acc_body_frame}")
+  # ans = input("Any Key...")
+  # if ans in ["y", "Y"]:
+  #   import pdb
+  #   pdb.set_trace()
+  return np.concatenate(
+      (desired_lin_acc_body_frame, desired_ang_acc_body_frame), axis=0)
+
+
+def convert_to_skew_symmetric_batch(foot_positions):
+  """
+  Converts foot positions (4x3) into skew-symmetric ones (3x12)
+  """
+  x = foot_positions[:, 0]  # - 0.023
+  y = foot_positions[:, 1]
+  z = foot_positions[:, 2]
+  zero = np.zeros_like(x)
+  skew = np.stack([zero, -z, y, z, zero, -x, -y, x, zero], axis=0).reshape(
+      (3, 3, 4))
+  return np.concatenate(
+      [skew[:, :, 0], skew[:, :, 1], skew[:, :, 2], skew[:, :, 3]], axis=1)
+
+
+def construct_mass_mat(foot_positions,
+                       foot_contact_state,
+                       inv_mass,
+                       inv_inertia,
+                       device: str = 'cuda',
+                       mask_noncontact_legs: bool = True):
+  mass_mat = np.zeros((6, 12))
+  # Construct mass matrix
+  inv_mass_concat = np.concatenate([inv_mass] * 4, axis=1)
+  mass_mat[:3] = inv_mass_concat
+  px = convert_to_skew_symmetric_batch(foot_positions)
+  mass_mat[3:6] = inv_inertia.dot(px)
+  # Mark out non-contact legs
+  if mask_noncontact_legs:
+    leg_id = np.nonzero(np.logical_not(foot_contact_state))[0]
+    mass_mat[:, leg_id * 3] = 0
+    mass_mat[:, leg_id * 3 + 1] = 0
+    mass_mat[:, leg_id * 3 + 2] = 0
+  return mass_mat
+
+
+def solve_grf(mass_mat,
+              desired_acc,
+              base_rot_mat_t,
+              Wq,
+              Wf: float,
+              foot_friction_coef: float,
+              clip_grf: bool,
+              foot_contact_state,
+              device: str = 'cuda'):
+  g = np.zeros(6)
+  g[2] = 9.8
+
+  g[:3] = base_rot_mat_t.dot(g[:3])  # Convert to body frame
+  Q = np.zeros((6, 6)) + Wq
+  R = np.eye(12) * Wf
+
+  quad_term = mass_mat.T.dot(Q).dot(mass_mat) + R
+  linear_term = mass_mat.T.dot(Q).dot(g + desired_acc)
+  grf = np.linalg.pinv(quad_term).dot(linear_term)
+
+  base_rot_mat = base_rot_mat_t.T
+  grf = grf.reshape((4, 3))
+  grf_world = base_rot_mat.dot(grf.T).T
+  clipped_motor = np.logical_or(grf_world[:, 2] < 10, grf_world[:, 2] >
+                                130) * np.logical_not(foot_contact_state)
+  if clip_grf:
+    grf_world[:, 2] = grf_world[:, 2].clip(min=10, max=130)
+    grf_world[:, 2] *= foot_contact_state
+
+  friction_force = np.linalg.norm(grf_world[:, :2], axis=1) + 0.001
+  max_friction_force = foot_friction_coef * grf_world[:, 2].clip(min=0)
+  multiplier = np.where(friction_force < max_friction_force, 1,
+                        max_friction_force / friction_force)
+
+  clipped_grf = np.logical_or(multiplier < 1, clipped_motor)
+  if clip_grf:
+    grf_world[:, :2] *= multiplier[:, None]
+
+  grf = base_rot_mat_t.dot(grf_world.T).T.reshape(12)
+
+  # Convert to motor torques
+  solved_acc = mass_mat.dot(grf) - g
+  qp_cost = (solved_acc - desired_acc).T.dot(Q).dot(solved_acc - desired_acc)
+  return grf, solved_acc, qp_cost, np.sum(clipped_grf)
+
+
+# @torch.jit.script
+def solve_grf_qpth(mass_mat,
+                   desired_acc,
+                   base_rot_mat_t,
+                   Wq,
+                   Wf: float,
+                   foot_friction_coef: float,
+                   clip_grf: bool,
+                   foot_contact_state,
+                   device: str = 'cuda'):
+  raise NotImplementedError()
+  num_envs = mass_mat.shape[0]
+  g = torch.zeros((num_envs, 6), device=device)
+  g[:, 2] = 9.8
+
+  g[:, :3] = torch.matmul(base_rot_mat_t, g[:, :3, None])[:, :, 0]
+  Q = torch.zeros((num_envs, 6, 6), device=device) + Wq[None, :]
+  Wf_mat = torch.eye(12, device=device) * Wf
+  R = torch.zeros((num_envs, 12, 12), device=device) + Wf_mat[None, :]
+
+  quad_term = torch.bmm(torch.bmm(torch.transpose(mass_mat, 1, 2), Q),
+                        mass_mat) + R
+  linear_term = torch.bmm(torch.bmm(torch.transpose(mass_mat, 1, 2), Q),
+                          (g + desired_acc)[:, :, None])[:, :, 0]
+
+  G = torch.zeros((mass_mat.shape[0], 24, 12), device=device)
+  h = torch.zeros((mass_mat.shape[0], 24), device=device) + 1e-3
+  base_rot_mat = torch.transpose(base_rot_mat_t, 1, 2)
+  for leg_id in range(4):
+    G[:, leg_id * 2, leg_id * 3 + 2] = 1
+    G[:, leg_id * 2 + 1, leg_id * 3 + 2] = -1
+
+    row_id, col_id = 8 + leg_id * 4, leg_id * 3
+    G[:, row_id, col_id] = 1
+    G[:, row_id, col_id + 2] = -foot_friction_coef
+
+    G[:, row_id + 1, col_id] = -1
+    G[:, row_id + 1, col_id + 2] = -foot_friction_coef
+
+    G[:, row_id + 2, col_id + 1] = 1
+    G[:, row_id + 2, col_id + 2] = -foot_friction_coef
+
+    G[:, row_id + 3, col_id + 1] = -1
+    G[:, row_id + 3, col_id + 2] = -foot_friction_coef
+    G[:, leg_id * 2:leg_id * 2 + 2, col_id:col_id + 3] = torch.bmm(
+        G[:, leg_id * 2:leg_id * 2 + 2, col_id:col_id + 3], base_rot_mat)
+    G[:, row_id:row_id + 4, col_id:col_id + 3] = torch.bmm(
+        G[:, row_id:row_id + 4, col_id:col_id + 3], base_rot_mat)
+
+  contact_ids = foot_contact_state.nonzero()
+
+  h[contact_ids[:, 0], contact_ids[:, 1] * 2] = 130
+  h[contact_ids[:, 0], contact_ids[:, 1] * 2 + 1] = -10
+  e = torch.autograd.Variable(torch.Tensor())
+
+  qf = QPFunction(verbose=-1,
+                  check_Q_spd=False,
+                  eps=1e-3,
+                  solver=QPSolvers.PDIPM_BATCHED)
+  grf = qf(quad_term.double(), -linear_term.double(), G.double(), h.double(),
+           e, e).float()
+  # print(grf)
+  # ans = input("Any Key...")
+  # if ans in ["Y", "y"]:
+  #   import pdb
+  #   pdb.set_trace()
+  solved_acc = torch.bmm(mass_mat, grf[:, :, None])[:, :, 0] - g
+  qp_cost = torch.bmm(
+      torch.bmm((solved_acc - desired_acc)[:, :, None].transpose(1, 2), Q),
+      (solved_acc - desired_acc)[:, :, None])[:, 0, 0]
+
+  return grf, solved_acc, qp_cost, torch.zeros(mass_mat.shape[0],
+                                               device=device)
+
+
+class QPTorqueOptimizer:
+  """Centroidal QP controller to optimize for joint torques.
+
+  Odometry = Zero-yaw frame / Roomba frame.
+  """
+  def __init__(self,
+               robot: Any,
+               gait_generator: Any,
+               base_position_kp=np.array([50., 50., 50]),
+               base_position_kd=np.array([1., 1., 1.]),
+               base_orientation_kp=np.array([50., 50., 0.]),
+               base_orientation_kd=np.array([1., 1., 10.]),
+               weight_ddq=np.diag([1., 1., 10., 10., 10., 1.]),
+               weight_grf=1e-4,
+               body_mass=14.076,
+               body_inertia=np.array([0.14, 0.35, 0.35]) * 1.5,
+               desired_body_height=0.26,
+               foot_friction_coef=0.7,
+               clip_grf=False,
+               use_full_qp=False):
+    """Initializes the controller with desired weights and gains."""
+    self._robot = robot
+    self._device = self._robot.device
+    self._gait_generator = gait_generator
+    self._num_envs = self._robot.num_envs
+    if self._num_envs != 1:
+      raise RuntimeError(
+          "Numpy version of QPTorqueOptimizer only supports single envs.")
+    self._clip_grf = clip_grf
+    self._use_full_qp = use_full_qp
+
+    self._base_orientation_kp = np.array(base_orientation_kp)
+    self._base_orientation_kd = np.array(base_orientation_kd)
+    self._base_position_kp = np.array(base_position_kp)
+    self._base_position_kd = np.array(base_position_kd)
+
+    self._desired_base_orientation_rpy = torch.zeros((self._num_envs, 3),
+                                                     device=self._device)
+    self._desired_base_position = torch.zeros((self._num_envs, 3),
+                                              device=self._device)
+    self._desired_base_position[:, 2] = desired_body_height
+    self._desired_linear_velocity = torch.zeros((self._num_envs, 3),
+                                                device=self._device)
+    self._desired_angular_velocity = torch.zeros((self._num_envs, 3),
+                                                 device=self._device)
+    self._desired_linear_acceleration = torch.zeros((self._num_envs, 3),
+                                                    device=self._device)
+    self._desired_angular_acceleration = torch.zeros((self._num_envs, 3),
+                                                     device=self._device)
+    self._Wq = np.array(weight_ddq)
+    self._Wf = np.array(weight_grf)
+    self._foot_friction_coef = foot_friction_coef
+    self._inv_mass = np.eye(3) / body_mass
+    self._inv_inertia = np.linalg.inv(np.diag(np.array(body_inertia)))
+
+    self._last_leg_state = np.array(
+        self._gait_generator.desired_contact_state[0])
+    self._last_timestamp = self._robot.time_since_reset[0].item()
+    self._foot_position_odometry_frame = np.zeros((4, 3))
+
+  def reset(self) -> None:
+    self._last_leg_state = np.array(
+        self._gait_generator.desired_contact_state[0])
+    self._last_timestamp = self._robot.time_since_reset[0].item()
+    foot_position = np.array(self._robot.base_rot_mat_zero_yaw[0]).dot(
+        np.array(self._robot.foot_positions_in_base_frame[0]).T).T
+    foot_position[:, 2] += self._robot.base_position[0, 2].item()
+    self._foot_position_odometry_frame = foot_position
+
+  def reset_idx(self, env_ids) -> None:
+    self.reset()
+
+  def update(self) -> None:
+    # compute dt and stance foot odometry position
+    curr_timestamp = self._robot.time_since_reset[0].item()
+    dt = curr_timestamp - self._last_timestamp
+    self._last_timestamp = curr_timestamp
+
+    # base_vel = self._robot.base_velocity_world_frame
+    base_vel = np.array(self._desired_linear_velocity[0])
+    dx, dy = base_vel[0] * dt, base_vel[1] * dt
+    # rot_z = self._robot.base_angular_velocity_world_frame[..., 2] * dt
+    rot_z = self._desired_angular_velocity[0, 2].item() * dt
+    rot_mat = np.array([
+        [np.cos(rot_z), -np.sin(rot_z), 0],
+        [np.sin(rot_z), np.cos(rot_z), 0],
+        [0, 0, 1],
+    ])
+
+    stance_foot_position = self._foot_position_odometry_frame.copy()
+    stance_foot_position[:, 0] -= dx
+    stance_foot_position[:, 1] -= dy
+    stance_foot_position = rot_mat.T.dot(stance_foot_position.T).T
+
+    # Landing foot position
+    landing_foot_position = np.array(self._robot.base_rot_mat_zero_yaw[0]).dot(
+        np.array(self._robot.foot_positions_in_base_frame[0]).T).T
+
+    landing_foot_position[:, 2] += self._robot.base_position[0, 2].item()
+
+    # Record leg state
+    new_leg_state = np.array(self._gait_generator.desired_contact_state[0])
+    phase_switch = (self._last_leg_state != new_leg_state)
+    self._last_leg_state = new_leg_state
+
+    # Assign foot odometry frame positions
+    self._foot_position_odometry_frame = np.where(
+        np.stack([phase_switch] * 3, axis=1), landing_foot_position,
+        stance_foot_position)
+
+  def _solve_joint_torques(self, foot_contact_state, desired_com_ddq):
+    """Solves centroidal QP to find desired joint torques."""
+    self._mass_mat = construct_mass_mat(
+        np.array(self._robot.foot_positions_in_base_frame[0]),
+        foot_contact_state,
+        self._inv_mass,
+        self._inv_inertia,
+        mask_noncontact_legs=not self._use_full_qp,
+        device=self._device)
+
+    # Solve QP
+    if self._use_full_qp:
+      grf, solved_acc, qp_cost, num_clips = solve_grf_qpth(
+          self._mass_mat,
+          desired_com_ddq,
+          np.array(self._robot.base_rot_mat_zero_yaw_t[0]),
+          self._Wq,
+          self._Wf,
+          self._foot_friction_coef,
+          self._clip_grf,
+          foot_contact_state,
+          device=self._device)
+    else:
+      grf, solved_acc, qp_cost, num_clips = solve_grf(
+          self._mass_mat,
+          desired_com_ddq,
+          np.array(self._robot.base_rot_mat_zero_yaw_t[0]),
+          self._Wq,
+          self._Wf,
+          self._foot_friction_coef,
+          self._clip_grf,
+          foot_contact_state,
+          device=self._device)
+
+    all_foot_jacobian = np.array(self._robot.all_foot_jacobian[0])
+    motor_torques = -all_foot_jacobian.T.dot(grf)
+    return motor_torques, solved_acc, grf, qp_cost, num_clips
+
+  def compute_joint_command(self, foot_contact_state: torch.Tensor,
+                            desired_base_orientation_rpy: torch.Tensor,
+                            desired_base_position: torch.Tensor,
+                            desired_swing_foot_position: torch.Tensor,
+                            desired_angular_velocity: torch.Tensor,
+                            desired_linear_velocity: torch.Tensor,
+                            desired_foot_velocity: torch.Tensor,
+                            desired_angular_acceleration: torch.Tensor,
+                            desired_linear_acceleration: torch.Tensor,
+                            desired_foot_acceleration: torch.Tensor):
+
+    desired_swing_foot_position = torch.bmm(
+        self._robot.base_rot_mat_t,
+        desired_swing_foot_position.transpose(1, 2)).transpose(1, 2)
+    desired_swing_foot_position[:, :, 2] = torch.clip(
+        desired_swing_foot_position[:, :, 2], min=-0.4, max=-0.1)
+
+    desired_foot_position = torch.where(
+        torch.tile(self._gait_generator.desired_contact_state[:, :, None],
+                   [1, 1, 3]), self._robot.foot_positions_in_base_frame,
+        desired_swing_foot_position)
+
+    desired_position = self._robot.get_motor_angles_from_foot_positions(
+        desired_foot_position)
+
+    desired_position = desired_position.clip(
+        min=self._robot.motor_group.min_positions + 1e-3,
+        max=self._robot.motor_group.max_positions - 1e-3)
+    desired_position = desired_position.clip(
+        min=self._robot.motor_positions - 0.5,
+        max=self._robot.motor_positions + 0.5)
+
+    # Velocity Command
+    desired_base_velocity_body_frame = torch.bmm(
+        self._robot.base_rot_mat_zero_yaw_t,
+        desired_linear_velocity[:, :, None])[:, :, 0]
+    desired_angular_velocity_body_frame = torch.bmm(
+        self._robot.base_rot_mat_zero_yaw_t,
+        desired_angular_velocity[:, :, None])[:, :, 0]
+
+    desired_foot_velocity = -desired_base_velocity_body_frame[:, None, :] - cross_quad(
+        desired_angular_velocity_body_frame,
+        self._robot.foot_positions_in_base_frame)
+
+    desired_stance_velocity = torch.bmm(
+        torch.linalg.pinv(self._robot.all_foot_jacobian),
+        desired_foot_velocity.reshape((self._num_envs, 12, 1)))[:, :, 0]
+    contact_state_expanded = foot_contact_state.repeat_interleave(3, dim=1)
+
+    desired_velocity = torch.where(
+        contact_state_expanded, desired_stance_velocity,
+        torch.zeros_like(self._robot.motor_velocities))
+
+    # Torque Command
+    desired_acc_body_frame = compute_desired_acc(
+        np.array(self._robot.base_orientation_rpy[0]),
+        np.array(self._robot.base_position[0]),
+        np.array(self._robot.base_angular_velocity_body_frame[0]),
+        np.array(self._robot.base_velocity_body_frame[0]),
+        np.array(desired_base_orientation_rpy[0]),
+        np.array(desired_base_position[0]),
+        np.array(desired_angular_velocity[0]),
+        np.array(desired_linear_velocity[0]),
+        np.array(desired_angular_acceleration[0]),
+        np.array(desired_linear_acceleration[0]),
+        np.array(self._base_position_kp[0]),
+        np.array(self._base_position_kd[0]),
+        np.array(self._base_orientation_kp[0]),
+        np.array(self._base_orientation_kd[0]))
+    desired_acc_body_frame = np.clip(desired_acc_body_frame,
+                                     np.array([-30, -30, -10, -50, -50, -20]),
+                                     np.array([30, 30, 30, 50, 50, 20]))
+    motor_torques, solved_acc, grf, qp_cost, num_clips = self._solve_joint_torques(
+        np.array(foot_contact_state[0]), desired_acc_body_frame)
+
+    motor_torques = to_torch(motor_torques[None, :], device=self._device)
+    desired_acc_body_frame = to_torch(desired_acc_body_frame[None, :],
+                                      device=self._device)
+    solved_acc = to_torch(solved_acc[None, :], device=self._device)
+    qp_cost = to_torch(qp_cost[None], device=self._device)
+    num_clips = to_torch(num_clips[None], device=self._device)
+    desired_torque = torch.where(contact_state_expanded, motor_torques,
+                                 torch.zeros_like(motor_torques))
+    desired_torque = torch.clip(desired_torque,
+                                max=self._robot.motor_group.max_torques,
+                                min=self._robot.motor_group.min_torques)
+
+    return MotorCommand(
+        desired_position=desired_position,
+        kp=torch.where(contact_state_expanded, 10, 30),
+        desired_velocity=desired_velocity,
+        kd=torch.where(contact_state_expanded, 1., 1),
+        desired_extra_torque=desired_torque
+    ), desired_acc_body_frame, solved_acc, qp_cost, num_clips
+
+  def get_action(self, foot_contact_state: torch.Tensor,
+                 swing_foot_position: torch.Tensor):
+    """Computes motor actions."""
+    return self.compute_joint_command(
+        foot_contact_state=foot_contact_state,
+        desired_base_orientation_rpy=self._desired_base_orientation_rpy,
+        desired_base_position=self._desired_base_position,
+        desired_swing_foot_position=swing_foot_position,
+        desired_angular_velocity=self._desired_angular_velocity,
+        desired_linear_velocity=self._desired_linear_velocity,
+        desired_foot_velocity=torch.zeros(12),
+        desired_angular_acceleration=self._desired_angular_acceleration,
+        desired_linear_acceleration=self._desired_linear_acceleration,
+        desired_foot_acceleration=torch.zeros(12))
+
+  @property
+  def desired_base_position(self) -> torch.Tensor:
+    return self._desired_base_position
+
+  @desired_base_position.setter
+  def desired_base_position(self, base_position: float):
+    self._desired_base_position = to_torch(base_position, device=self._device)
+
+  @property
+  def desired_base_orientation_rpy(self) -> torch.Tensor:
+    return self._desired_base_orientation_rpy
+
+  @desired_base_orientation_rpy.setter
+  def desired_base_orientation_rpy(self, orientation_rpy: torch.Tensor):
+    self._desired_base_orientation_rpy = to_torch(orientation_rpy,
+                                                  device=self._device)
+
+  @property
+  def desired_linear_velocity(self) -> torch.Tensor:
+    return self._desired_linear_velocity
+
+  @desired_linear_velocity.setter
+  def desired_linear_velocity(self, desired_linear_velocity: torch.Tensor):
+    self._desired_linear_velocity = to_torch(desired_linear_velocity,
+                                             device=self._device)
+
+  @property
+  def desired_angular_velocity(self) -> torch.Tensor:
+    return self._desired_angular_velocity
+
+  @desired_angular_velocity.setter
+  def desired_angular_velocity(self, desired_angular_velocity: torch.Tensor):
+    self._desired_angular_velocity = to_torch(desired_angular_velocity,
+                                              device=self._device)
+
+  @property
+  def desired_linear_acceleration(self):
+    return self._desired_linear_acceleration
+
+  @desired_linear_acceleration.setter
+  def desired_linear_acceleration(self,
+                                  desired_linear_acceleration: torch.Tensor):
+    self._desired_linear_acceleration = to_torch(desired_linear_acceleration,
+                                                 device=self._device)
+
+  @property
+  def desired_angular_acceleration(self):
+    return self._desired_angular_acceleration
+
+  @desired_angular_acceleration.setter
+  def desired_angular_acceleration(self,
+                                   desired_angular_acceleration: torch.Tensor):
+    self._desired_angular_acceleration = to_torch(desired_angular_acceleration,
+                                                  device=self._device)

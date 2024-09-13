@@ -1,0 +1,7 @@
+<launch>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" >
+        <arg name="port" value="9090"/>
+    </include>
+    <node name="republish_color" type="republish" pkg="image_transport" args="raw in:=/camera/color/image_raw compressed  out:=/camera/color/image_raw_repub" />
+    <node name="republish_depth" type="republish" pkg="image_transport" args="raw in:=/camera/depth/image_grayscale compressed  out:=/camera/depth/image_grayscale_repub" />
+</launch>

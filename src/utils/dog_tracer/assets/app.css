@@ -1,0 +1,56 @@
+body {
+    margin: 0 !important;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    background-color: #f5f5f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    /*max-width: 900px;*/
+    margin: 0 auto;
+    padding: 0px;
+    background-color: #f5f5f5;
+    /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #444;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+.plot {
+    width: 33.33%;
+    height:  100%;
+    min-width: 250px; /* Optional: Set a minimum width to prevent plots from becoming too small */
+}

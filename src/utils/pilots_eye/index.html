@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+<script type="text/javascript" src="scripts/eventemitter2.min.js"></script>
+<script type="text/javascript" src="scripts/roslib.min.js"></script>
+
+<script type="text/javascript" type="text/javascript">
+  // Connecting to ROS
+  var ros = new ROSLIB.Ros({
+    url : 'ws://' + window.location.hostname + ':9090'
+  });
+
+  ros.on('connection', function() {
+    console.log('connected to websocket server.');
+    document.getElementById('connection').innerHTML = "Connected to websocket server."
+  });
+
+  ros.on('error', function(error) {
+    console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', function() {
+    console.log('Connection to websocket server closed.');
+  });
+
+  // Subscribing to a Topic
+  var waypoint_topic = new ROSLIB.Topic({
+    ros : ros,
+    name : '/status/distance_to_waypoint',
+    messageType : 'std_msgs/String'
+  });
+
+  waypoint_topic.subscribe(function(message) {
+    document.getElementById('distance_to_waypoint').innerHTML = message.data;
+  });
+
+
+  var color_topic = new ROSLIB.Topic({
+    ros: ros, name: '/camera/color/image_raw_repub/compressed',
+    messageType: 'sensor_msgs/CompressedImage'
+  });
+
+  color_topic.subscribe(function(message) {
+    document.getElementById('color').src = "data:image/png;base64," + message.data;
+  });
+
+  var depth_topic = new ROSLIB.Topic({
+    ros: ros, name: '/camera/depth/image_grayscale_repub/compressed',
+    messageType: 'sensor_msgs/CompressedImage'
+  });
+
+  depth_topic.subscribe(function(message) {
+    document.getElementById('depth').src = "data:image/png;base64," + message.data;
+  });
+
+</script>
+</head>
+
+<body>
+  <h1>Pilot's Eye</h1>
+  <p>System status: <span id="connection">Connecting to ROS...</span></p>
+
+  <p>Operation status: <span id="operation_mode"></span></p>
+  <p>Fixed speed (if applies): <span id="fixed_speed"></span></p>
+  <h2>Camera Image and Speed Map</h2>
+  <img id="color" style='height: 49%; width: 49%; object-fit: contain' src="assets/img/placeholder.png">
+  <img id="depth" style='height: 49%; width: 49%; object-fit: contain' src="assets/img/placeholder.png">
+</body>
+</html>

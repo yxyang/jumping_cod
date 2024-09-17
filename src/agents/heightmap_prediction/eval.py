@@ -69,10 +69,10 @@ def main(argv):
     config.env_config.terrain.terrain_proportions = dict(
         slope_smooth=0.,
         slope_rough=0.,
-        stair=0.,
+        stair=1.,
         obstacles=0.,
         stepping_stones=0.,
-        gap=1.,
+        gap=0.,
         pit=0.,
     )
 
@@ -157,7 +157,6 @@ def main(argv):
         if done.any():
           print(info["episode"])
           break
-        input("Any Key...")
 
         if FLAGS.show_gui and steps_count % 4 == 0:
           env.robot.render()

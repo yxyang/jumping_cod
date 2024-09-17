@@ -4,9 +4,7 @@ import os
 from ml_collections import ConfigDict
 import yaml
 
-from src.agents.imitation_learning.policies import depth_policy, depth_policy_recurrent
 from src.agents.ppo.configs import bound_together as bound_together_ppo
-from src.agents.ppo.configs import trot_together_speed as trot_together_ppo
 from src.envs.terrain import GenerationMethod  # pylint: disable=unused-import
 
 
@@ -27,7 +25,7 @@ def get_config():
 
   config.teacher_config = bound_together_ppo.get_config()
   config.teacher_ckpt = (
-      'logs/20240811/1_ablation_ours/2024_08_13_17_29_11/model_7950.pt'
+      'logs/20240912/1_demo_allterrain_ckpt/2024_09_13_16_38_18/model_8000.pt'
   )
 
   config_path = os.path.join(os.path.dirname(config.teacher_ckpt),
@@ -66,7 +64,6 @@ def get_config():
   config.batch_size = 4
   config.num_steps = 30 * 50
 
-  config.student_policy_class = depth_policy_recurrent.DepthPolicyRecurrent
   config.num_iters = 30
 
   return config

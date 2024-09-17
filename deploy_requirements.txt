@@ -1,11 +1,16 @@
 absl-py
 cvxpy
 dash
+evdev
 filterpy
 ml_collections
 numpy
+opencv-python
 pybullet
 qpth
+quadprog
+rospkg
+supervisor
 tensorboard
 torch
 torchaudio

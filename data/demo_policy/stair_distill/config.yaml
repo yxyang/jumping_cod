@@ -1,0 +1,1103 @@
+!!python/object:ml_collections.config_dict.config_dict.ConfigDict
+_convert_dict: true
+_fields:
+  batch_size: 4
+  env_class: &id005 !!python/name:src.envs.jump_env.JumpEnv ''
+  env_config: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+    _convert_dict: true
+    _fields:
+      action_lb: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - &id001 !!python/name:numpy.ndarray ''
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 16
+        - &id002 !!python/object/apply:numpy.dtype
+          args:
+          - f8
+          - false
+          - true
+          state: !!python/tuple
+          - 3
+          - <
+          - null
+          - null
+          - null
+          - -1
+          - -1
+          - 0
+        - false
+        - !!binary |
+          AAAAAAAA4D/8qfHSTWJQvwAAAAAAAAjAexSuR+F6hL8AAAAAAAAIwPyp8dJNYlC//Knx0k1iUL97
+          FK5H4XqEvwAAAAAAABjAexSuR+F6hL+amZmZmZnJv+xRuB6F67G/AAAAAAAAAACamZmZmZnJv+xR
+          uB6F67G/AAAAAAAAAAA=
+      action_ub: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 16
+        - *id002
+        - false
+        - !!binary |
+          y6FFtvP9D0D8qfHSTWJQPwAAAAAAAAhAexSuR+F6hD8AAAAAAAAIQPyp8dJNYlA//Knx0k1iUD97
+          FK5H4XqEPwAAAAAAABhAexSuR+F6hD+amZmZmZnJP+xRuB6F67E/mpmZmZmZ2T+amZmZmZnJP+xR
+          uB6F67E/mpmZmZmZ2T8=
+      actuator_net_ckpt: null
+      base_orientation_kd: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 3
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAA8D8AAAAAAAAkQAAAAAAAACRA
+      base_orientation_kp: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 3
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAASUAAAAAAAAAAAAAAAAAAAAAA
+      base_position_kd: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 3
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAAJEAAAAAAAAAkQAAAAAAAACRA
+      base_position_kp: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 3
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      camera_config: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+        _convert_dict: true
+        _fields:
+          horizontal_fov_deg: 21.43
+          horizontal_res: 16
+          orientation_rpy_in_base_frame:
+          - 0.0
+          - 0.52
+          - 0.0
+          position_in_base_frame:
+          - 0.272
+          - 0.0075
+          - 0.092
+          vertical_fov_deg: 59.18
+          vertical_res: 48
+        _locked: true
+        _type_safe: true
+      camera_dt: 0.02
+      clip_grf_in_sim: true
+      clip_negative_reward: false
+      clip_negative_terminal_reward: false
+      com_perturbation_lb: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 6
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQwAAAAAAAAAAA
+      com_perturbation_refresh_rate: 2
+      com_perturbation_ub: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 6
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAAA
+      env_dt: 0.01
+      episode_length_s: 10.0
+      foot_friction: 1.0
+      gait: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+        _convert_dict: true
+        _fields:
+          initial_offset: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 4
+            - &id003 !!python/object/apply:numpy.dtype
+              args:
+              - f4
+              - false
+              - true
+              state: !!python/tuple
+              - 3
+              - <
+              - null
+              - null
+              - null
+              - -1
+              - -1
+              - 0
+            - false
+            - !!binary |
+              fNmgPnzZoD582SDAfNkgwA==
+          stepping_frequency: 1
+          swing_ratio: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 4
+            - *id003
+            - false
+            - !!binary |
+              mpkZP5qZGT+amRk/mpkZPw==
+        _locked: true
+        _type_safe: true
+      goal_lb: !!python/object/apply:torch._utils._rebuild_tensor_v2
+      - !!python/object/apply:torch.storage._load_from_bytes
+        - !!binary |
+          gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+          AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+          aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3Jh
+          Z2UKcQFYCQAAADEyNjUyMzkyMHECWAMAAABjcHVxA0sCTnRxBFEugAJdcQBYCQAAADEyNjUyMzky
+          MHEBYS4CAAAAAAAAAHe+fz+Vv9az
+      - 0
+      - !!python/tuple
+        - 2
+      - !!python/tuple
+        - 1
+      - false
+      - !!python/object/apply:collections.OrderedDict
+        - []
+      goal_ub: !!python/object/apply:torch._utils._rebuild_tensor_v2
+      - !!python/object/apply:torch.storage._load_from_bytes
+        - !!binary |
+          gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+          AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+          aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3Jh
+          Z2UKcQFYCQAAADEzMjY2MDU0NHECWAMAAABjcHVxA0sCTnRxBFEugAJdcQBYCQAAADEzMjY2MDU0
+          NHEBYS4CAAAAAAAAAAAAgD+Vv9Yz
+      - 0
+      - !!python/tuple
+        - 2
+      - !!python/tuple
+        - 1
+      - false
+      - !!python/object/apply:collections.OrderedDict
+        - []
+      height_noise_lb:
+      - -0.08
+      - 0.0
+      - -0.05
+      height_noise_ub:
+      - 0.08
+      - 0.0
+      - 0.05
+      include_foot_action: true
+      include_gait_action: true
+      max_jumps: 10
+      measured_points_x:
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - &id004 !!python/object/apply:numpy.dtype
+          args:
+          - f8
+          - false
+          - true
+          state: !!python/tuple
+          - 3
+          - <
+          - null
+          - null
+          - null
+          - -1
+          - -1
+          - 0
+        - !!binary |
+          mpmZmZmZ2b8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          QzpvMaTz1r8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          7dpEya5N1L8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          lnsaYbmn0b8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          fzjg8YcDzr8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          0nmLIZ23yL8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          JLs2UbJrw78=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          8PjDAY8/vL8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          lHsaYbmnsb8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          4PjDAY8/nL8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          APnDAY8/jD8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          +PjDAY8/rD8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          2HmLIZ23uD8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          mHsaYbmnwT8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          RDpvMaTzxj8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          9PjDAY8/zD8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          0FsM6bzF0D8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          Jrs2UbJr0z8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          fhphuacR1j8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          1HmLIZ232D8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          Ktm1iZJd2z8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          gjjg8YcD3j8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          7EsFrb5U4D8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          l3saYbmn4T8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          Q6svFbT64j8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          7dpEya5N5D8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          mQpafamg5T8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          RTpvMaTz5j8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          72mE5Z5G6D8=
+      - !!python/object/apply:numpy.core.multiarray.scalar
+        - *id004
+        - !!binary |
+          mpmZmZmZ6T8=
+      measured_points_y:
+      - 0.0
+      mirror_foot_action: true
+      motor_strength_ratios: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 12
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8A
+          AAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/
+      motor_torque_delay_steps: 5
+      normalize_reward_by_phase: true
+      observe_heights: true
+      qp_body_inertia: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 3
+        - *id002
+        - false
+        - !!binary |
+          4noUrkfhyj/MzMzMzMzgP8zMzMzMzOA/
+      qp_foot_friction_coef: 0.6
+      qp_weight_ddq: !!python/object/apply:numpy.core.multiarray._reconstruct
+        args:
+        - *id001
+        - !!python/tuple
+          - 0
+        - !!binary |
+          Yg==
+        state: !!python/tuple
+        - 1
+        - !!python/tuple
+          - 6
+          - 6
+        - *id002
+        - false
+        - !!binary |
+          AAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAACRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAAJEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          AAAkQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          APA/
+      randomize_com: false
+      rewards:
+      - !!python/tuple
+        - alive
+        - 0.02
+      - !!python/tuple
+        - contact_consistency
+        - 0.008
+      - !!python/tuple
+        - foot_slipping
+        - 0.032
+      - !!python/tuple
+        - foot_clearance
+        - 0.008
+      - !!python/tuple
+        - out_of_bound_action
+        - 0.01
+      - !!python/tuple
+        - knee_contact
+        - 0.064
+      - !!python/tuple
+        - stepping_freq
+        - 0.008
+      - !!python/tuple
+        - com_distance_to_goal_squared
+        - 0.016
+      - !!python/tuple
+        - vertical_distance
+        - 0.016
+      - !!python/tuple
+        - com_yaw
+        - 0.016
+      - !!python/tuple
+        - com_height
+        - 0.01
+      - !!python/tuple
+        - qp_cost
+        - 0.0001
+      swing_foot_height: 0.0
+      swing_foot_landing_clearance: 0.0
+      swing_foot_limit: !!python/tuple
+      - -0.4
+      - -0.1
+      terminal_rewards: []
+      terminate_on_body_contact: true
+      terminate_on_height: 0.15
+      terminate_on_limb_contact: false
+      terrain: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+        _convert_dict: true
+        _fields:
+          border_size: 15
+          curriculum: false
+          generation_method: !!python/object/apply:src.envs.terrain.GenerationMethod
+          - 0
+          horizontal_scale: 0.05
+          max_init_level: 1
+          move_down_distance: 2.5
+          move_up_distance: 4.5
+          num_cols: 10
+          num_rows: 10
+          random_terrain_type_within_level: true
+          randomize_step_width: true
+          randomize_steps: false
+          restitution: 0.0
+          slope_threshold: 0.75
+          terrain_length: 10
+          terrain_proportions: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+            _convert_dict: true
+            _fields:
+              gap: 0.0
+              obstacles: 0.0
+              pit: 0.0
+              slope_rough: 0.0
+              slope_smooth: 0.0
+              stair: 0.25
+              stepping_stones: 0.0
+            _locked: true
+            _type_safe: true
+          terrain_width: 10
+          type: trimesh
+          vertical_scale: 0.005
+        _locked: true
+        _type_safe: true
+      use_full_qp: false
+      use_penetrating_contact: false
+      use_swing_foot_reference: true
+      use_yaw_feedback: false
+    _locked: true
+    _type_safe: true
+  num_dagger_steps: 5000
+  num_envs: 10
+  num_init_steps: 5000
+  num_iters: 30
+  num_steps: 1500
+  teacher_ckpt: data/demo_policy/stair_rl/model_8000.pt
+  teacher_config: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+    _convert_dict: true
+    _fields:
+      env_class: *id005
+      environment: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+        _convert_dict: true
+        _fields:
+          action_lb: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 16
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAA4D/8qfHSTWJQvwAAAAAAAAjAexSuR+F6hL8AAAAAAAAIwPyp8dJNYlC//Knx0k1iUL97
+              FK5H4XqEvwAAAAAAABjAexSuR+F6hL+amZmZmZnJv+xRuB6F67G/AAAAAAAAAACamZmZmZnJv+xR
+              uB6F67G/AAAAAAAAAAA=
+          action_ub: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 16
+            - *id004
+            - false
+            - !!binary |
+              y6FFtvP9D0D8qfHSTWJQPwAAAAAAAAhAexSuR+F6hD8AAAAAAAAIQPyp8dJNYlA//Knx0k1iUD97
+              FK5H4XqEPwAAAAAAABhAexSuR+F6hD+amZmZmZnJP+xRuB6F67E/mpmZmZmZ2T+amZmZmZnJP+xR
+              uB6F67E/mpmZmZmZ2T8=
+          actuator_net_ckpt: null
+          base_orientation_kd: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 3
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAA8D8AAAAAAAAkQAAAAAAAACRA
+          base_orientation_kp: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 3
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAASUAAAAAAAAAAAAAAAAAAAAAA
+          base_position_kd: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 3
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAAJEAAAAAAAAAkQAAAAAAAACRA
+          base_position_kp: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 3
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          clip_grf_in_sim: true
+          clip_negative_reward: false
+          clip_negative_terminal_reward: false
+          com_perturbation_lb: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 6
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQwAAAAAAAAAAA
+          com_perturbation_refresh_rate: 2
+          com_perturbation_ub: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 6
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAAA
+          env_dt: 0.01
+          episode_length_s: 20.0
+          foot_friction: 1.0
+          gait: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+            _convert_dict: true
+            _fields:
+              initial_offset: !!python/object/apply:numpy.core.multiarray._reconstruct
+                args:
+                - *id001
+                - !!python/tuple
+                  - 0
+                - !!binary |
+                  Yg==
+                state: !!python/tuple
+                - 1
+                - !!python/tuple
+                  - 4
+                - &id006 !!python/object/apply:numpy.dtype
+                  args:
+                  - f4
+                  - false
+                  - true
+                  state: !!python/tuple
+                  - 3
+                  - <
+                  - null
+                  - null
+                  - null
+                  - -1
+                  - -1
+                  - 0
+                - false
+                - !!binary |
+                  fNmgPnzZoD582SDAfNkgwA==
+              stepping_frequency: 1
+              swing_ratio: !!python/object/apply:numpy.core.multiarray._reconstruct
+                args:
+                - *id001
+                - !!python/tuple
+                  - 0
+                - !!binary |
+                  Yg==
+                state: !!python/tuple
+                - 1
+                - !!python/tuple
+                  - 4
+                - *id006
+                - false
+                - !!binary |
+                  mpkZP5qZGT+amRk/mpkZPw==
+            _locked: true
+            _type_safe: true
+          goal_lb: !!python/object/apply:torch._utils._rebuild_tensor_v2
+          - !!python/object/apply:torch.storage._load_from_bytes
+            - !!binary |
+              gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+              AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+              aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3Jh
+              Z2UKcQFYCQAAADEzMTgyNTI4MHECWAMAAABjcHVxA0sCTnRxBFEugAJdcQBYCQAAADEzMTgyNTI4
+              MHEBYS4CAAAAAAAAAHe+fz+Vv9az
+          - 0
+          - !!python/tuple
+            - 2
+          - !!python/tuple
+            - 1
+          - false
+          - !!python/object/apply:collections.OrderedDict
+            - []
+          goal_ub: !!python/object/apply:torch._utils._rebuild_tensor_v2
+          - !!python/object/apply:torch.storage._load_from_bytes
+            - !!binary |
+              gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAA
+              AGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAA
+              aW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3Jh
+              Z2UKcQFYCQAAADEyODMxNzMyOHECWAMAAABjcHVxA0sCTnRxBFEugAJdcQBYCQAAADEyODMxNzMy
+              OHEBYS4CAAAAAAAAAAAAgD+Vv9Yz
+          - 0
+          - !!python/tuple
+            - 2
+          - !!python/tuple
+            - 1
+          - false
+          - !!python/object/apply:collections.OrderedDict
+            - []
+          height_noise_lb:
+          - -0.08
+          - 0.0
+          - -0.05
+          height_noise_ub:
+          - 0.08
+          - 0.0
+          - 0.05
+          include_foot_action: true
+          include_gait_action: true
+          max_jumps: 10
+          measured_points_x:
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              mpmZmZmZ2b8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              QzpvMaTz1r8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              7dpEya5N1L8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              lnsaYbmn0b8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              fzjg8YcDzr8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              0nmLIZ23yL8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              JLs2UbJrw78=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              8PjDAY8/vL8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              lHsaYbmnsb8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              4PjDAY8/nL8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              APnDAY8/jD8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              +PjDAY8/rD8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              2HmLIZ23uD8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              mHsaYbmnwT8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              RDpvMaTzxj8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              9PjDAY8/zD8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              0FsM6bzF0D8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              Jrs2UbJr0z8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              fhphuacR1j8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              1HmLIZ232D8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              Ktm1iZJd2z8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              gjjg8YcD3j8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              7EsFrb5U4D8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              l3saYbmn4T8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              Q6svFbT64j8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              7dpEya5N5D8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              mQpafamg5T8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              RTpvMaTz5j8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              72mE5Z5G6D8=
+          - !!python/object/apply:numpy.core.multiarray.scalar
+            - *id004
+            - !!binary |
+              mpmZmZmZ6T8=
+          measured_points_y:
+          - 0.0
+          mirror_foot_action: true
+          motor_strength_ratios: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 12
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/AAAAAAAA8D8A
+              AAAAAADwPwAAAAAAAPA/AAAAAAAA8D8AAAAAAADwPwAAAAAAAPA/
+          motor_torque_delay_steps: 5
+          normalize_reward_by_phase: true
+          observe_heights: true
+          qp_body_inertia: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 3
+            - *id004
+            - false
+            - !!binary |
+              4noUrkfhyj/MzMzMzMzgP8zMzMzMzOA/
+          qp_foot_friction_coef: 0.6
+          qp_weight_ddq: !!python/object/apply:numpy.core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 6
+              - 6
+            - *id004
+            - false
+            - !!binary |
+              AAAAAAAA8D8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              AAAAAADwPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              AAAAACRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              AAAAJEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              AAAkQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+              APA/
+          randomize_com: false
+          rewards:
+          - !!python/tuple
+            - alive
+            - 0.02
+          - !!python/tuple
+            - contact_consistency
+            - 0.008
+          - !!python/tuple
+            - foot_slipping
+            - 0.032
+          - !!python/tuple
+            - foot_clearance
+            - 0.008
+          - !!python/tuple
+            - out_of_bound_action
+            - 0.01
+          - !!python/tuple
+            - knee_contact
+            - 0.064
+          - !!python/tuple
+            - stepping_freq
+            - 0.008
+          - !!python/tuple
+            - com_distance_to_goal_squared
+            - 0.016
+          - !!python/tuple
+            - vertical_distance
+            - 0.016
+          - !!python/tuple
+            - com_yaw
+            - 0.016
+          - !!python/tuple
+            - com_height
+            - 0.01
+          - !!python/tuple
+            - qp_cost
+            - 0.0001
+          swing_foot_height: 0.0
+          swing_foot_landing_clearance: 0.0
+          swing_foot_limit: !!python/tuple
+          - -0.4
+          - -0.1
+          terminal_rewards: []
+          terminate_on_body_contact: true
+          terminate_on_height: 0.15
+          terminate_on_limb_contact: false
+          terrain: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+            _convert_dict: true
+            _fields:
+              border_size: 15
+              curriculum: true
+              generation_method: !!python/object/apply:src.envs.terrain.GenerationMethod
+              - 1
+              horizontal_scale: 0.05
+              max_init_level: 1
+              move_down_distance: 2.5
+              move_up_distance: 4.5
+              num_cols: 10
+              num_rows: 10
+              randomize_step_width: true
+              randomize_steps: false
+              restitution: 0.0
+              slope_threshold: 0.75
+              terrain_length: 10
+              terrain_proportions: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+                _convert_dict: true
+                _fields:
+                  gap: 0.0
+                  obstacles: 0.0
+                  pit: 0.0
+                  slope_rough: 0.0
+                  slope_smooth: 0.0
+                  stair: 0.25
+                  stepping_stones: 0.0
+                _locked: true
+                _type_safe: true
+              terrain_width: 10
+              type: trimesh
+              vertical_scale: 0.005
+            _locked: true
+            _type_safe: true
+          use_full_qp: false
+          use_penetrating_contact: false
+          use_swing_foot_reference: true
+          use_yaw_feedback: false
+        _locked: true
+        _type_safe: true
+      training: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+        _convert_dict: true
+        _fields:
+          algorithm: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+            _convert_dict: true
+            _fields:
+              clip_param: 0.2
+              desired_kl: 0.01
+              entropy_coef: 0.01
+              gamma: 0.99
+              lam: 0.95
+              learning_rate: 0.001
+              max_grad_norm: 1.0
+              num_learning_epochs: 5
+              num_mini_batches: 4
+              schedule: adaptive
+              use_clipped_value_loss: true
+              value_loss_coef: 1.0
+            _locked: true
+            _type_safe: true
+          policy: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+            _convert_dict: true
+            _fields:
+              activation: elu
+              actor_hidden_dims:
+              - 512
+              - 256
+              - 128
+              critic_hidden_dims:
+              - 512
+              - 256
+              - 128
+              init_noise_std: 0.5
+            _locked: true
+            _type_safe: true
+          runner: !!python/object:ml_collections.config_dict.config_dict.ConfigDict
+            _convert_dict: true
+            _fields:
+              algorithm_class_name: PPO
+              experiment_name: go1_single_jump
+              max_iterations: 8000
+              num_steps_per_env: 24
+              policy_class_name: ActorCritic
+              save_interval: 50
+            _locked: true
+            _type_safe: true
+          seed: 1
+        _locked: true
+        _type_safe: true
+    _locked: true
+    _type_safe: true
+_locked: true
+_type_safe: true

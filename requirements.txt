@@ -3,8 +3,10 @@ cvxpy
 dash
 evdev
 filterpy
+imageio-ffmpeg
 ml_collections
 numpy==1.19.5
+opencv-python
 pybullet==3.2.5
 qpth
 quadprog

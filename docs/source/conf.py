@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'Jumping Cod'
+copyright = '2024'
+author = 'Yuxiang Yang'
 
 release = '0.1'
 version = '0.1.0'
@@ -28,8 +28,11 @@ intersphinx_disabled_domains = ['std']
 templates_path = ['_templates']
 
 # -- Options for HTML output
+html_static_path = ['images']
 
 html_theme = 'sphinx_rtd_theme'
+
+
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'

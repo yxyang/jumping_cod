@@ -1,22 +1,48 @@
-Welcome to Lumache's documentation!
-===================================
+Jumping Continuously over Discontinuous Terrains
+=========================================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
++-------------------------------------+-----------------------------------------------+
+| .. image:: images/teaser.gif        | .. image:: images/teaser_stepstone.gif        |
+|    :scale: 50 %                     |    :scale: 50 %                               |
+|    :alt: First GIF                  |    :alt: Second GIF                           |
++-------------------------------------+-----------------------------------------------+
 
-Check out the  section for further information, including
-how to the project.
 
-.. note::
+This repository contains the code for the paper `Agile Continuous Jumping in Discontinuous Terrains <http://yxyang.github.io/jumping_cod>`_. The name of this repo, Jumping CoD, stands for *Jumping Continuously over Discontinuities*.
 
-   This project is under active development.
+
++-------------------------------------+
+| .. image:: images/jumping_cod.jpg   |
+|    :scale: 25 %                     |
+|    :alt: A Jumping Cod              |
++-------------------------------------+
+|          **A Jumping Cod**          |
++-------------------------------------+
+
+
+
+The main contents of the repo includes:
+
+* The simulation environment to train the terrain-aware jumping controller.
+* The code to deploy the trained controller to a real Unitree Go1 robot.
+* Additional utilities to inspect robot logs and record data for real-to-sim study.
+
+
+TODOs
+-----
+.. * Real Robot Deployment
+.. * Reproducing Paper Results
+* Utilities (Dog Tracer / Sim2Real tools)
 
 Contents
 --------
 
 .. toctree::
+   simulation_setup
+   real_robot_setup
+   training_a_new_policy
+   utilities
 
-   usage
-   api
+Credits
+-------
+Camera Mount

@@ -1,6 +1,6 @@
 # Jumping CoD (Jumping Continuously over Discontinuities)
 
-This repository contains the code for the paper ["Agile Continuous Jumping over Discontinuous Terrains"](https://arxiv.org/abs/2306.09557).
+This repository contains the code for the paper ["Agile Continuous Jumping over Discontinuous Terrains"](https://yxyang.github.io/jumping_cod).
 
 The main contents of the repo includes:
 

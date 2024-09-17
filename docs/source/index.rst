@@ -28,12 +28,6 @@ The main contents of the repo includes:
 * Additional utilities to inspect robot logs and record data for real-to-sim study.
 
 
-TODOs
------
-.. * Real Robot Deployment
-.. * Reproducing Paper Results
-* Utilities (Dog Tracer / Sim2Real tools)
-
 Contents
 --------
 

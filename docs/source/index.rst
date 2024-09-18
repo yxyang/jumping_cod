@@ -39,4 +39,4 @@ Contents
 
 Credits
 -------
-Camera Mount
+The perception pipeline used in this project is heavily inspired from the `Robot Parkour Learning work <https://robot-parkour.github.io/>`_. More specifically, we design our camera mount based on their 3D design, and used a very similar perception network structure. We thank the authors, especially Zipeng Fu, for his generous support.
